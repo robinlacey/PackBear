@@ -2,8 +2,8 @@ namespace DealerBear.Player
 {
     public interface IStat
     {
-         int Current { get; }
-         int Minimum { get; }
-         int Maximum { get; }
+         int Current { get; set; }
+         int Minimum { get; set; }
+         int Maximum { get; set; }
     }
 }

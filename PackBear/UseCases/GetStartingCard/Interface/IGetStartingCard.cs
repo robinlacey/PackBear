@@ -1,7 +1,7 @@
 using PackBear.Adaptor.Interface;
 using PackBear.Gateway.Interface;
+using PackBear.Player.Interface;
 using PackBear.UseCases.GetRandomCard.Interface;
-using PackBear.UseCases.GetStartingStats.Interface;
 
 namespace Tests.UseCase.GetStartingCard.Interface
 {
@@ -9,7 +9,7 @@ namespace Tests.UseCase.GetStartingCard.Interface
     {
         void Execute(
             IGetRandomCard getRandomCardUseCase, 
-            IGetStartingStats getStartingStatsUseCase,
+            IStartingStats startingStats,
             IPublishMessageAdaptor publishMessageAdaptor,
             IPackDataGateway packDataGateway);
     }
