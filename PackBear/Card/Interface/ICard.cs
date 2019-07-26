@@ -9,6 +9,8 @@ namespace PackBear.Card.Interface
         string Description { get; }
         string ImageURL { get; }
         string CardWeight { get; }
-        ICardOption[] Options { get; set; }
+        int VersionAdded { get; set; }
+        int? VersionRemoved { get; set; }
+        ICardOption[] Options { get; }
     }
 }

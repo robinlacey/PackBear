@@ -1,9 +1,6 @@
 using NUnit.Framework;
-using PackBear.Card.Interface;
 using PackBear.Card.Options.Interface;
 using PackBear.UseCases.AddCard;
-using PackBear.UseCases.IsValidCardData.Interface;
-using PackBear.UseCases.UpdateVersionNumber;
 using PackBearTests.Mocks;
 
 namespace PackBearTests.UseCase
@@ -16,72 +13,91 @@ namespace PackBearTests.UseCase
         public void CardDataIsPassedToIsValidCardData(string data)
         {
             IsValidCardDataSpy spy = new IsValidCardDataSpy();
-            new AddCard(spy, new UpdateVersionNumberDummy(),new VersionNumberGatewayDummy(),new CardGatewayDummy(), new JsonDeserializeAdaptorDummy()).Execute(data);
-            Assert.True(spy.CardData == data);
+            new AddCard(spy, new CardGatewayDummy(), new JsonDeserializeAdaptorDummy(), new VersionNumberGatewayDummy()).Execute(data);
+            Assert.True(spy.LastCardData == data);
         }
+
         public class GivenValidCardData
         {
-     
-            [TestCase(1)]
-            [TestCase(44)]
-            [TestCase(52)]
-            
-            public void ThenUpdateVersionNumberIsIncrementedByOne(int startingVersionNumber)
-            {
-                VersionNumberGatewayStub gatewayStub = new VersionNumberGatewayStub(startingVersionNumber);
-                UpdateVersionNumberSpy spy = new UpdateVersionNumberSpy();
-                new AddCard(new IsValidCardDataStub(true),spy,gatewayStub,new CardGatewayDummy(), new JsonDeserializeAdaptorDummy()).Execute("Valid Json");
-                Assert.True(spy.NewVersionNumber == startingVersionNumber+1);
-            }
-            
             [TestCase("Scout")]
             [TestCase("I A Dog")]
             public void ThenCardGatewayHasCardIsCalled(string cardID)
             {
-                CardStub stub = new CardStub(cardID," "," "," ",new ICardOption[0]," " );
+                CardStub stub = new CardStub(cardID, " ", " ", " ", new ICardOption[0], " ");
                 CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(stub, false);
-                new AddCard(new IsValidCardDataStub(true),new UpdateVersionNumberDummy(), new VersionNumberGatewayStub(0),cardGatewaySpy, new JsonDeserializeAdaptorStub(stub)).Execute("Valid Json");
-                Assert.True(cardGatewaySpy.HasCardCalled); 
-                Assert.True(cardGatewaySpy.HasCardID == cardID); 
+                new AddCard(new IsValidCardDataStub(true), cardGatewaySpy, new JsonDeserializeAdaptorStub(stub), new VersionNumberGatewayDummy())
+                    .Execute("Valid Json");
+                Assert.True(cardGatewaySpy.HasCardCalled);
+                Assert.True(cardGatewaySpy.HasCardID == cardID);
             }
 
             public class WhenCardIDExists
             {
-                [TestCase("Scout")]
-                [TestCase("I A Dog")]
-                public void ThenCardGatewayUpdateIsCalled(string cardID)
+                [TestCase("Scout",42)]
+                [TestCase("I A Dog",24)]
+                public void ThenCardGatewayUpdateIsCalledWithPackVersion(string cardID, int versionNumber)
                 {
-                    CardStub cardToAdd = new CardStub(cardID,"New Card","Dog","Cat",new ICardOption[0],"Cow" );
-                    CardStub existingCard = new CardStub(cardID,"Old Card"," "," ",new ICardOption[0]," " );
+                    CardStub cardToAdd = new CardStub(cardID, "New Card", "Dog", "Cat", new ICardOption[0], "Cow");
+                    CardStub existingCard = new CardStub(cardID, "Old Card", " ", " ", new ICardOption[0], " ");
                     CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, true);
-                    new AddCard(new IsValidCardDataStub(true),new UpdateVersionNumberDummy(), new VersionNumberGatewayStub(0),cardGatewaySpy, new JsonDeserializeAdaptorStub(cardToAdd)).Execute("Valid Json");
-                    Assert.True(cardGatewaySpy.UpdateCardCalled); 
-                    Assert.True(cardGatewaySpy.UpdateCardID == cardID); 
-                    Assert.True(cardGatewaySpy.UpdateCardCardAdded == cardToAdd); 
+                    new AddCard(new IsValidCardDataStub(true), cardGatewaySpy,
+                        new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
+                    Assert.True(cardGatewaySpy.UpdateCardCalled);
+                    
+                    Assert.True(cardGatewaySpy.UpdateCardID == cardID);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded == cardToAdd);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.Title == cardToAdd.Title);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.Description == cardToAdd.Description);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.CardWeight == cardToAdd.CardWeight);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.CardID == cardToAdd.CardID);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.ImageURL == cardToAdd.ImageURL);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.Options == cardToAdd.Options);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.VersionRemoved == null);
+                    Assert.True(cardGatewaySpy.UpdateCardCardAdded.VersionAdded == versionNumber);
                 }
             }
 
             public class WhenCardIDIsNew
             {
-                [TestCase("Scout")]
-                [TestCase("I A Dog")]
-                public void ThenCardGatewayAdd(string cardID)
+                [TestCase("Scout",42)]
+                [TestCase("I A Dog",24)]
+                public void ThenCardGatewayAddIsCalledWithPackVersion(string cardID, int versionNumber)
                 {
-                    CardStub cardToAdd = new CardStub(cardID,"New Card","Dog","Cat",new ICardOption[0],"Cow" );
-                    CardStub existingCard = new CardStub(cardID +"Now Invalid","Old Card"," "," ",new ICardOption[0]," " );
+                    CardStub cardToAdd = new CardStub(cardID, "New Card", "Dog", "Cat", new ICardOption[0], "Cow");
+                    CardStub existingCard = new CardStub(cardID + "Now Invalid", "Old Card", " ", " ",
+                        new ICardOption[0], " ");
                     CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, false);
-                    new AddCard(new IsValidCardDataStub(true),new UpdateVersionNumberDummy(), new VersionNumberGatewayStub(0),cardGatewaySpy, new JsonDeserializeAdaptorStub(cardToAdd)).Execute("Valid Json");
-                    Assert.True(cardGatewaySpy.AddCardCalled); 
-                    Assert.True(cardGatewaySpy.CardAdded == cardToAdd); 
+                    new AddCard(new IsValidCardDataStub(true), cardGatewaySpy,
+                        new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
+                    Assert.True(cardGatewaySpy.AddCardCalled);
+                    
+                    Assert.True(cardGatewaySpy.CardAdded.Title == cardToAdd.Title);
+                    Assert.True(cardGatewaySpy.CardAdded.Description == cardToAdd.Description);
+                    Assert.True(cardGatewaySpy.CardAdded.CardWeight == cardToAdd.CardWeight);
+                    Assert.True(cardGatewaySpy.CardAdded.CardID == cardToAdd.CardID);
+                    Assert.True(cardGatewaySpy.CardAdded.ImageURL == cardToAdd.ImageURL);
+                    Assert.True(cardGatewaySpy.CardAdded.Options == cardToAdd.Options);
+                    Assert.True(cardGatewaySpy.CardAdded.VersionAdded == versionNumber);
+                    Assert.True(cardGatewaySpy.CardAdded.VersionRemoved == null);
+                    Assert.True(cardGatewaySpy.CardAdded == cardToAdd);
                 }
             }
-           
-
         }
 
         public class GivenInvalidCardData
         {
-            IIsValidCardData _isValidCardDataStub = new IsValidCardDataStub(false);
+            [Test]
+            public void ThenNothingElseIsCalled()
+            {
+                CardStub cardToAdd = new CardStub("CardID", "New Card", "Dog", "Cat", new ICardOption[0], "Cow");
+                CardStub existingCard = new CardStub("Now Invalid", "Old Card", " ", " ", new ICardOption[0], " ");
+                CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, false);
+                new AddCard(new IsValidCardDataStub(false), cardGatewaySpy, new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayDummy())
+                    .Execute("Valid Json");
+                Assert.False(cardGatewaySpy.AddCardCalled);
+                Assert.False(cardGatewaySpy.HasCardCalled);
+                Assert.False(cardGatewaySpy.UpdateCardCalled);
+            }
         }
     }
 }

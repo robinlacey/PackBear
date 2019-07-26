@@ -10,6 +10,8 @@ namespace PackBearTests.Mocks
         public string Description { get; }
         public string ImageURL { get; }
         public string CardWeight { get; }
-        public ICardOption[] Options { get; set; }
+        public int VersionAdded { get; set; }
+        public int? VersionRemoved { get; set; }
+        public ICardOption[] Options { get;}
     }
 }

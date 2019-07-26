@@ -3,40 +3,35 @@ using PackBear.Card.Interface;
 using PackBear.Gateway.Interface;
 using PackBear.UseCases.AddCard.Interface;
 using PackBear.UseCases.IsValidCardData.Interface;
-using PackBear.UseCases.UpdateVersionNumber.Interface;
 
 namespace PackBear.UseCases.AddCard
 {
     public class AddCard:IAddCard
     {
         private readonly IIsValidCardData _validCardData;
-        private readonly IUpdateVersionNumber _updateVersionNumber;
-        private readonly IVersionNumberGateway _versionNumberGateway;
         private readonly ICardGateway _cardGateway;
         private readonly IJsonDeserializeAdaptor _jsonDeserializeAdaptor;
+        private readonly IVersionNumberGateway _versionNumberGateway;
 
         public AddCard(
-            IIsValidCardData validCardData, 
-            IUpdateVersionNumber updateVersionNumber, 
-            IVersionNumberGateway versionNumberGateway, 
+            IIsValidCardData validCardData,  
             ICardGateway cardGateway,
-            IJsonDeserializeAdaptor jsonDeserializeAdaptor)
+            IJsonDeserializeAdaptor jsonDeserializeAdaptor,
+            IVersionNumberGateway versionNumberGateway)
         {
             _validCardData = validCardData;
-            _updateVersionNumber = updateVersionNumber;
-            _versionNumberGateway = versionNumberGateway;
             _cardGateway = cardGateway;
             _jsonDeserializeAdaptor = jsonDeserializeAdaptor;
+            _versionNumberGateway = versionNumberGateway;
         }
 
         public void Execute(string json)
         {
             if (_validCardData.Execute(json))
             {
-                _updateVersionNumber.Execute(_versionNumberGateway.Get()+1);
-                
                 ICard card = _jsonDeserializeAdaptor.DeserializeCard(json);
 
+                card.VersionAdded = _versionNumberGateway.Get();
                 if (_cardGateway.HasCard(card.CardID))
                 {
                     _cardGateway.UpdateCard(card);

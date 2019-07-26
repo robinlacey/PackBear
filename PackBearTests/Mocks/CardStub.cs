@@ -22,6 +22,8 @@ namespace PackBearTests.Mocks
         public string ImageURL { get; set; }
         public string ImageUrl { get; }
         public string CardWeight { get; }
-        public ICardOption[] Options { get; set; }
+        public int VersionAdded { get; set; }
+        public int? VersionRemoved { get; set; }
+        public ICardOption[] Options { get; }
     }
 }

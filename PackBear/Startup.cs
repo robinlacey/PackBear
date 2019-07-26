@@ -15,10 +15,6 @@ using PackBear.Gateway.Interface;
 using PackBear.Messages;
 using PackBear.Player;
 using PackBear.Player.Interface;
-using PackBear.UseCases.GetRandomCard;
-using PackBear.UseCases.GetRandomCard.Interface;
-using PackBear.UseCases.GetStartingCard;
-using PackBear.UseCases.GetStartingCard.Interface;
 using PackBear.UseCases.IsValidCardData;
 using PackBear.UseCases.IsValidCardData.Interface;
 
@@ -109,8 +105,6 @@ namespace PackBear
 
         private static void AddUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetRandomCard, GetRandomCard>();
-            services.AddScoped<IGetStartingCard, GetStartingCard>();
             services.AddScoped<IIsValidCardData, IsValidCardData>();
         }
 
