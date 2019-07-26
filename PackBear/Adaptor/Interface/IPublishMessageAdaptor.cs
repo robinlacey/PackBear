@@ -5,6 +5,6 @@ namespace PackBear.Adaptor.Interface
 {
     public interface IPublishMessageAdaptor
     {
-        Task Publish<T>(T message, CancellationToken cancellationToken = default (CancellationToken)) where T : class;
+        Task Publish<T>(T message, CancellationToken cancellationToken = default(CancellationToken)) where T : class;
     }
 }

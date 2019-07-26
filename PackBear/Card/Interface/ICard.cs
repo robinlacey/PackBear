@@ -1,4 +1,6 @@
-namespace DealerBear.Card.Interface
+using PackBear.Card.Options.Interface;
+
+namespace PackBear.Card.Interface
 {
     public interface ICard
     {
@@ -6,7 +8,7 @@ namespace DealerBear.Card.Interface
         string Title { get; }
         string Description { get; }
         string ImageURL { get; }
+        string CardWeight { get; }
         ICardOption[] Options { get; set; }
-        
     }
 }

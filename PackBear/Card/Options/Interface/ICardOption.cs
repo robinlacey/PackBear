@@ -1,9 +1,12 @@
-namespace DealerBear.Card.Interface
+using PackBear.Player.Interface;
+
+namespace PackBear.Card.Options.Interface
 {
     public interface ICardOption
     {
         string Title { get; }
         string Description { get; }
-        IPlayerStats PlayerStats { get; }
+        IPlayerStatsToChange PlayerStatsToChange { get; }
+        string[] CardsToAdd { get; }
     }
 }

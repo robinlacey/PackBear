@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace PackBearTests.Gateway
 {
-    public class InMemoryPackDataGatewayTests
+    public class InMemoryVersionNumberGatewayTests
     {
         [Test]
         void TODO()

@@ -6,7 +6,7 @@ using PackBear.Player.Interface;
 
 namespace PackBear.Consumers
 {
-    public class RequestStartingCardConsumer:IConsumer<IRequestStartingCard>
+    public class RequestStartingCardConsumer : IConsumer<IRequestStartingCard>
     {
         private readonly IStartingStats _startingStats;
 
@@ -14,6 +14,7 @@ namespace PackBear.Consumers
         {
             _startingStats = startingStats;
         }
+
         public Task Consume(ConsumeContext<IRequestStartingCard> context)
         {
             throw new System.NotImplementedException();

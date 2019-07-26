@@ -5,7 +5,7 @@ using PackBear.Adaptor.Interface;
 
 namespace PackBear.Adaptor
 {
-    public class PublishMessageMassTransitAdaptor:IPublishMessageAdaptor
+    public class PublishMessageMassTransitAdaptor : IPublishMessageAdaptor
     {
         private readonly IPublishEndpoint _massTransitEndPoint;
 
@@ -13,7 +13,9 @@ namespace PackBear.Adaptor
         {
             _massTransitEndPoint = massTransitEndPoint;
         }
-        public Task Publish<T>(T message, CancellationToken cancellationToken = default(CancellationToken)) where T : class
+
+        public Task Publish<T>(T message, CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
         {
             return _massTransitEndPoint.Publish(message, cancellationToken);
         }

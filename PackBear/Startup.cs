@@ -18,7 +18,7 @@ using PackBear.Player.Interface;
 using PackBear.UseCases.GetRandomCard;
 using PackBear.UseCases.GetRandomCard.Interface;
 using PackBear.UseCases.GetStartingCard;
-using Tests.UseCase.GetStartingCard.Interface;
+using PackBear.UseCases.GetStartingCard.Interface;
 
 namespace PackBear
 {
@@ -38,7 +38,7 @@ namespace PackBear
             AddUseCases(services);
             AddConsumers(services);
             AddStartingStats(services);
-            
+
             string rabbitMQHost = $"rabbitmq://{Environment.GetEnvironmentVariable("RABBITMQ_HOST")}";
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -58,10 +58,8 @@ namespace PackBear
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
             AddRequestClients(services);
             AddAdaptors(services);
-          
+
             services.AddSingleton<IHostedService, BusService>();
-            
-        
         }
 
         private static void SetEndPoints(IRabbitMqBusFactoryConfigurator cfg, IRabbitMqHost host,
@@ -93,19 +91,18 @@ namespace PackBear
         private static void AddConsumers(IServiceCollection services)
         {
             services.AddScoped<RequestStartingCardConsumer>();
-            services.AddMassTransit(x =>
-            {
-                x.AddConsumer<RequestStartingCardConsumer>();
-            });
+            services.AddMassTransit(x => { x.AddConsumer<RequestStartingCardConsumer>(); });
         }
 
         private static void AddGateways(IServiceCollection services)
         {
-            services.AddSingleton<IPackDataGateway, InMemoryPackDataGateway>();
+            services.AddSingleton<IPackGateway, InMemoryPackGateway>();
         }
+
         private static void AddAdaptors(IServiceCollection services)
         {
             services.AddScoped<IPublishMessageAdaptor, PublishMessageMassTransitAdaptor>();
+            services.AddScoped<IJsonDeserializeAdaptor, JsonConvertDeserializeAdaptor>();
         }
 
         private static void AddUseCases(IServiceCollection services)
@@ -118,6 +115,7 @@ namespace PackBear
         {
             services.AddSingleton<IStartingStats, StartingStats>();
         }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

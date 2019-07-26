@@ -1,11 +1,11 @@
 using NUnit.Framework;
 
-namespace PackBearTests.Gateway
+namespace PackBearTests.UseCase
 {
-    public class InMemoryPackDataGatewayTests
+    public class AddCardTests
     {
         [Test]
-        void TODO()
+        public void TODO()
         {
             Assert.Fail();
         }
