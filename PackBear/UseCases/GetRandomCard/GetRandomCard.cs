@@ -6,7 +6,13 @@ namespace PackBear.UseCases.GetRandomCard
 {
     public class GetRandomCard : IGetRandomCard
     {
-        public ICard Execute(int seed, int turnNumber, int packVersion, IPackGateway packGateway)
+        private readonly IPackGateway _packGateway;
+
+        public GetRandomCard(IPackGateway packGateway)
+        {
+            _packGateway = packGateway;
+        }
+        public ICard Execute(int seed, int turnNumber, int packVersion)
         {
             throw new System.NotImplementedException();
         }

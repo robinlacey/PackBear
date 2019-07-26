@@ -5,7 +5,6 @@ namespace PackBear.UseCases.GetRandomCard.Interface
 {
     public interface IGetRandomCard
     {
-        // TODO
-        ICard Execute(int seed, int turnNumber, int deckVersion, IPackGateway packGateway);
+        ICard Execute(int seed, int turnNumber, int deckVersion);
     }
 }

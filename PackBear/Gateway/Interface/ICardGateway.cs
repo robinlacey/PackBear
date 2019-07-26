@@ -4,8 +4,9 @@ namespace PackBear.Gateway.Interface
 {
     public interface ICardGateway
     {
+        bool HasCard(string cardID);
         ICard GetCard(string cardID);
         void AddCard(ICard card);
-        void UpdateCard(string cardID, ICard newCardData);
+        void UpdateCard(ICard card);
     }
 }

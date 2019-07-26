@@ -1,8 +1,7 @@
-using System;
 using PackBear.Adaptor.Interface;
 using PackBear.Card.Interface;
 
-namespace PackBearTests.UseCase
+namespace PackBearTests.Mocks
 {
     public class JsonDeserializeAdaptorStub : IJsonDeserializeAdaptor
     {

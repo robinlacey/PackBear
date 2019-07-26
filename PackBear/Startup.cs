@@ -19,6 +19,8 @@ using PackBear.UseCases.GetRandomCard;
 using PackBear.UseCases.GetRandomCard.Interface;
 using PackBear.UseCases.GetStartingCard;
 using PackBear.UseCases.GetStartingCard.Interface;
+using PackBear.UseCases.IsValidCardData;
+using PackBear.UseCases.IsValidCardData.Interface;
 
 namespace PackBear
 {
@@ -109,6 +111,7 @@ namespace PackBear
         {
             services.AddScoped<IGetRandomCard, GetRandomCard>();
             services.AddScoped<IGetStartingCard, GetStartingCard>();
+            services.AddScoped<IIsValidCardData, IsValidCardData>();
         }
 
         private static void AddStartingStats(IServiceCollection services)

@@ -6,7 +6,7 @@ namespace PackBearTests.Mocks
     public class CardStub : ICard
     {
         public CardStub(string cardID, string title, string description, string imageUrl, ICardOption[] cardOptions,
-            string cardWeight, float cardProbability)
+            string cardWeight)
         {
             CardID = cardID;
             Title = title;
@@ -14,7 +14,6 @@ namespace PackBearTests.Mocks
             ImageUrl = imageUrl;
             Options = cardOptions;
             CardWeight = cardWeight;
-            CardProbability = cardProbability;
         }
 
         public string CardID { get; set; }
@@ -23,7 +22,6 @@ namespace PackBearTests.Mocks
         public string ImageURL { get; set; }
         public string ImageUrl { get; }
         public string CardWeight { get; }
-        public float CardProbability { get; }
         public ICardOption[] Options { get; set; }
     }
 }

@@ -7,19 +7,29 @@ using PackBear.Player.Interface;
 namespace PackBear.UseCases.IsValidCardData
 {
     public class IsValidCardData : Interface.IIsValidCardData
+    
     {
-        public bool Execute(string card, IJsonDeserializeAdaptor jsonDeserializeAdaptor, IStartingStats startingStats)
+        private readonly IJsonDeserializeAdaptor _jsonDeserializeAdaptor;
+        private readonly IStartingStats _startingStats;
+
+        public IsValidCardData(IJsonDeserializeAdaptor jsonDeserializeAdaptor, IStartingStats startingStats)
+        {
+            _jsonDeserializeAdaptor = jsonDeserializeAdaptor;
+            _startingStats = startingStats;
+        }
+
+        public bool Execute(string card)
         {
             try
             {
-                ICard newCard = jsonDeserializeAdaptor.DeserializeCard(card);
-                if (InvalidOptionLength(startingStats, newCard))
+                ICard newCard = _jsonDeserializeAdaptor.DeserializeCard(card);
+                if (InvalidOptionLength(_startingStats, newCard))
                 {
                     return false;
                 }
 
-                if (!HasCorrectStatKeys(startingStats, newCard)) return false;
-                if (!HasValidWeightKey(startingStats, newCard)) return false;
+                if (!HasCorrectStatKeys(_startingStats, newCard)) return false;
+                if (!HasValidWeightKey(_startingStats, newCard)) return false;
             }
             catch
             {
