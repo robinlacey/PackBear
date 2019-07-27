@@ -7,11 +7,11 @@ namespace PackBearTests.Mocks
     {
         public List<string> CardDataHistory = new List<string>();
         public string LastCardData { get; private set; }
-        public bool Execute(string card)
+        public IValidationResult Execute(string card)
         {
             LastCardData = card;
             CardDataHistory.Add(card);
-            return false;
+            return new ValidationResultStub(false, "");
         }
     }
 }

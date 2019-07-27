@@ -11,6 +11,6 @@ namespace PackBearTests.Mocks
             ReturnValue = returnValue;
         }
 
-        public bool Execute(string card) => ReturnValue;
+        public IValidationResult Execute(string card) => new ValidationResultStub(ReturnValue, "");
     }
 }

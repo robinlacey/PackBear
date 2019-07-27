@@ -27,7 +27,7 @@ namespace PackBear.UseCases.AddCard
 
         public void Execute(string json)
         {
-            if (_validCardData.Execute(json))
+            if (_validCardData.Execute(json).Valid)
             {
                 ICard card = _jsonDeserializeAdaptor.DeserializeCard(json);
 
@@ -40,6 +40,10 @@ namespace PackBear.UseCases.AddCard
                 {
                     _cardGateway.AddCard(card);
                 }
+            }
+            else
+            {
+                //TODO throw exception with error message
             }
         }
     }

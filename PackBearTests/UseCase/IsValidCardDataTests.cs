@@ -23,7 +23,8 @@ namespace PackBearTests.UseCase
                 {
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorThrowExceptionStub(new Exception());
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, new StartingStatsDummy());
-                    Assert.False(isValidCardData.Execute("Not Json"));
+                    Assert.False(isValidCardData.Execute("Not Json").Valid);
+                    Assert.True(isValidCardData.Execute("Not Json").ErrorMessage.Trim().ToLower().Contains("failed to parse json"));
                 }
             }
         }
@@ -79,7 +80,8 @@ namespace PackBearTests.UseCase
 
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorStub(card);
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
-                    Assert.False(isValidCardData.Execute("This is real json" ));
+                    Assert.False(isValidCardData.Execute("This is real json" ).Valid);
+                    Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid stat values"));
                 }
             }
 
@@ -118,7 +120,8 @@ namespace PackBearTests.UseCase
                         "http://google.com/hello.png", new[] {cardOptionOne}, "Common");
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorStub(card);
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
-                    Assert.False(isValidCardData.Execute("This is real json" ));
+                    Assert.False(isValidCardData.Execute("This is real json" ).Valid);
+                    Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid option count"));
                 }
             }
 
@@ -171,7 +174,8 @@ namespace PackBearTests.UseCase
 
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorStub(card);
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
-                    Assert.False(isValidCardData.Execute("This is real json"));
+                    Assert.False(isValidCardData.Execute("This is real json").Valid);
+                    Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid weight value"));
                 }
             }
         }
@@ -200,7 +204,7 @@ namespace PackBearTests.UseCase
                         "http://google.com/hello.png", cardOptions, "Common");
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorStub(card);
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
-                    Assert.True(isValidCardData.Execute("This is real json"));
+                    Assert.True(isValidCardData.Execute("This is real json").Valid);
                 }
 
                 Dictionary<string, IStartingStat> GetStatsWithValues(string[] values)
