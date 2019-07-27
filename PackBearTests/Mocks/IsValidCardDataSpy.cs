@@ -11,7 +11,7 @@ namespace PackBearTests.Mocks
         {
             LastCardData = card;
             CardDataHistory.Add(card);
-            return new ValidationResultStub(false, "");
+            return new ValidationResultStub(false, "",null);
         }
     }
 }

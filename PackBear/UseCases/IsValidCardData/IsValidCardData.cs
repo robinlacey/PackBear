@@ -21,9 +21,10 @@ namespace PackBear.UseCases.IsValidCardData
 
         public IValidationResult Execute(string card)
         {
+            ICard newCard;
             try
             {
-                ICard newCard = _jsonDeserializeAdaptor.DeserializeCard(card);
+                newCard = _jsonDeserializeAdaptor.DeserializeCard(card);
                 if (InvalidOptionLength(_startingStats, newCard))
                 {
                     return new ValidationResult {Valid = false, ErrorMessage = $"Invalid Option count. The card Option count is {newCard.Options.Length }, it should be {_startingStats.OptionsCount}"};
@@ -37,7 +38,7 @@ namespace PackBear.UseCases.IsValidCardData
                 return new ValidationResult {Valid = false, ErrorMessage = "Failed to parse json string"};
             }
 
-            return new ValidationResult {Valid = true};
+            return new ValidationResult {Valid = true, ValidCardData = newCard};
         }
 
         private static bool HasValidWeightKey(IStartingStats startingStats, ICard newCard)

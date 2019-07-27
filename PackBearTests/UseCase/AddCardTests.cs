@@ -13,7 +13,7 @@ namespace PackBearTests.UseCase
         public void CardDataIsPassedToIsValidCardData(string data)
         {
             IsValidCardDataSpy spy = new IsValidCardDataSpy();
-            new AddCard(spy, new CardGatewayDummy(), new JsonDeserializeAdaptorDummy(), new VersionNumberGatewayDummy()).Execute(data);
+            new AddCard(spy, new CardGatewayDummy(), new VersionNumberGatewayDummy()).Execute(data);
             Assert.True(spy.LastCardData == data);
         }
 
@@ -25,7 +25,7 @@ namespace PackBearTests.UseCase
             {
                 CardStub stub = new CardStub(cardID, " ", " ", " ", new ICardOption[0], " ");
                 CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(stub, false);
-                new AddCard(new IsValidCardDataStub(true), cardGatewaySpy, new JsonDeserializeAdaptorStub(stub), new VersionNumberGatewayDummy())
+                new AddCard(new IsValidCardDataStub(true,stub), cardGatewaySpy, new VersionNumberGatewayDummy())
                     .Execute("Valid Json");
                 Assert.True(cardGatewaySpy.HasCardCalled);
                 Assert.True(cardGatewaySpy.HasCardID == cardID);
@@ -40,8 +40,7 @@ namespace PackBearTests.UseCase
                     CardStub cardToAdd = new CardStub(cardID, "New Card", "Dog", "Cat", new ICardOption[0], "Cow");
                     CardStub existingCard = new CardStub(cardID, "Old Card", " ", " ", new ICardOption[0], " ");
                     CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, true);
-                    new AddCard(new IsValidCardDataStub(true), cardGatewaySpy,
-                        new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
+                    new AddCard(new IsValidCardDataStub(true, cardToAdd), cardGatewaySpy,  new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
                     Assert.True(cardGatewaySpy.UpdateCardCalled);
                     
                     Assert.True(cardGatewaySpy.UpdateCardID == cardID);
@@ -67,8 +66,7 @@ namespace PackBearTests.UseCase
                     CardStub existingCard = new CardStub(cardID + "Now Invalid", "Old Card", " ", " ",
                         new ICardOption[0], " ");
                     CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, false);
-                    new AddCard(new IsValidCardDataStub(true), cardGatewaySpy,
-                        new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
+                    new AddCard(new IsValidCardDataStub(true,cardToAdd), cardGatewaySpy, new VersionNumberGatewayStub(versionNumber)).Execute("Valid Json");
                     Assert.True(cardGatewaySpy.AddCardCalled);
                     
                     Assert.True(cardGatewaySpy.CardAdded.Title == cardToAdd.Title);
@@ -92,7 +90,7 @@ namespace PackBearTests.UseCase
                 CardStub cardToAdd = new CardStub("CardID", "New Card", "Dog", "Cat", new ICardOption[0], "Cow");
                 CardStub existingCard = new CardStub("Now Invalid", "Old Card", " ", " ", new ICardOption[0], " ");
                 CardGatewaySpy cardGatewaySpy = new CardGatewaySpy(existingCard, false);
-                new AddCard(new IsValidCardDataStub(false), cardGatewaySpy, new JsonDeserializeAdaptorStub(cardToAdd), new VersionNumberGatewayDummy())
+                new AddCard(new IsValidCardDataStub(false,cardToAdd), cardGatewaySpy, new VersionNumberGatewayDummy())
                     .Execute("Valid Json");
                 Assert.False(cardGatewaySpy.AddCardCalled);
                 Assert.False(cardGatewaySpy.HasCardCalled);

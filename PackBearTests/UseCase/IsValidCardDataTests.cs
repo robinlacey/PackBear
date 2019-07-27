@@ -25,6 +25,7 @@ namespace PackBearTests.UseCase
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, new StartingStatsDummy());
                     Assert.False(isValidCardData.Execute("Not Json").Valid);
                     Assert.True(isValidCardData.Execute("Not Json").ErrorMessage.Trim().ToLower().Contains("failed to parse json"));
+                    Assert.IsNull(isValidCardData.Execute("This is real json").ValidCardData);
                 }
             }
         }
@@ -82,6 +83,7 @@ namespace PackBearTests.UseCase
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
                     Assert.False(isValidCardData.Execute("This is real json" ).Valid);
                     Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid stat values"));
+                    Assert.IsNull(isValidCardData.Execute("This is real json").ValidCardData);
                 }
             }
 
@@ -122,6 +124,7 @@ namespace PackBearTests.UseCase
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
                     Assert.False(isValidCardData.Execute("This is real json" ).Valid);
                     Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid option count"));
+                    Assert.IsNull(isValidCardData.Execute("This is real json").ValidCardData);
                 }
             }
 
@@ -176,6 +179,7 @@ namespace PackBearTests.UseCase
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
                     Assert.False(isValidCardData.Execute("This is real json").Valid);
                     Assert.True(isValidCardData.Execute("This is real json" ).ErrorMessage.ToLower().Trim().Contains("invalid weight value"));
+                    Assert.IsNull(isValidCardData.Execute("This is real json").ValidCardData);
                 }
             }
         }
@@ -205,6 +209,7 @@ namespace PackBearTests.UseCase
                     IJsonDeserializeAdaptor adaptorStub = new JsonDeserializeAdaptorStub(card);
                     IIsValidCardData isValidCardData = new IsValidCardData(adaptorStub, startingStats);
                     Assert.True(isValidCardData.Execute("This is real json").Valid);
+                    Assert.True(isValidCardData.Execute("This is real json").ValidCardData == card);
                 }
 
                 Dictionary<string, IStartingStat> GetStatsWithValues(string[] values)
