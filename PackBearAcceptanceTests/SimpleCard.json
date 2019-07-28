@@ -1,0 +1,25 @@
+{
+  "ID":"ID1",
+  "Title":"Simple Card",
+  "Description":"Description",
+  "ImageURL":"URL",
+  "Weight":"Common",
+  "Options":{
+    "Health":{
+      "Title":"Option 1 Title",
+      "Description":"Option 2 Description",
+      "Health": 1,
+      "Power": -2,
+      "Money": 3,
+      "CardsToAdd":[]
+    },
+    "Option2":{
+      "Title":"Option 2 Title",
+      "Description":"Option 2 Description",
+      "Health": 10,
+      "Power": -9,
+      "Money": 8,
+      "CardsToAdd":[]
+    }
+  }
+}

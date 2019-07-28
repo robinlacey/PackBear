@@ -1,10 +1,10 @@
-using DealerBear.Card.Interface;
+using PackBear.Player.Interface;
 
 namespace PackBear.Messages
 {
     public interface ICardStructure
     {
         int OptionCount { get; }
-        IPlayerStats StartingStats { get; }
+        IPlayerStatsToChange StartingStatsToChange { get; }
     }
 }
