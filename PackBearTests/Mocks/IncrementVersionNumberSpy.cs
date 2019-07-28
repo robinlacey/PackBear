@@ -1,3 +1,4 @@
+using System;
 using PackBear.UseCases.IncrementVersionNumber.Interface;
 
 namespace PackBearTests.Mocks
@@ -8,6 +9,7 @@ namespace PackBearTests.Mocks
 
         public IncrementVersionNumberSpy(int returnValue)
         {
+         
             _returnValue = returnValue;
         }
 
@@ -15,6 +17,7 @@ namespace PackBearTests.Mocks
 
         public int Execute()
         {
+            Console.WriteLine("Returnn "+_returnValue);
             Called = true;
             return _returnValue;
         }

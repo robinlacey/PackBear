@@ -1,17 +1,17 @@
 using PackBear.Gateway.Interface;
 
-namespace PackBear.Gateway
+namespace PackBearTests.Mocks
 {
-    public class InMemoryPackGateway : IPackGateway
+    public class PackGatewayDummy:IPackGateway
     {
         public string[] GetCards(int packVersion)
         {
-            throw new System.NotImplementedException();
+            return new string[0];
         }
 
         public void SetCards(string[] cards, int packVersion)
         {
-            throw new System.NotImplementedException();
+         
         }
     }
 }
