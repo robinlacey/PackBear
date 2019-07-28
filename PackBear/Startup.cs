@@ -105,7 +105,7 @@ namespace PackBear
 
         private static void AddUseCases(IServiceCollection services)
         {
-            services.AddScoped<IIsValidCardData, IsValidCardData>();
+            services.AddScoped<IValidCardData, ValidCardData>();
         }
 
         private static void AddStartingStats(IServiceCollection services)

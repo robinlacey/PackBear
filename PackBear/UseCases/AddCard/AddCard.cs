@@ -1,25 +1,24 @@
-using PackBear.Adaptor.Interface;
-using PackBear.Card.Interface;
 using PackBear.Gateway.Interface;
 using PackBear.UseCases.AddCard.Interface;
+using PackBear.UseCases.IncrementVersionNumber.Interface;
 using PackBear.UseCases.IsValidCardData.Interface;
 
 namespace PackBear.UseCases.AddCard
 {
-    public class AddCard:IAddCard
+    public class AddCard : IAddCard
     {
-        private readonly IIsValidCardData _validCardData;
+        private readonly IValidCardData _validCardData;
         private readonly ICardGateway _cardGateway;
-        private readonly IVersionNumberGateway _versionNumberGateway;
+        private readonly IIncrementVersionNumber _incrementVersionNumber;
 
         public AddCard(
-            IIsValidCardData validCardData,  
+            IValidCardData validCardData,
             ICardGateway cardGateway,
-            IVersionNumberGateway versionNumberGateway)
+            IIncrementVersionNumber incrementVersionNumber)
         {
             _validCardData = validCardData;
             _cardGateway = cardGateway;
-            _versionNumberGateway = versionNumberGateway;
+            _incrementVersionNumber = incrementVersionNumber;
         }
 
         public void Execute(string json)
@@ -27,10 +26,11 @@ namespace PackBear.UseCases.AddCard
             IValidationResult validationResult = _validCardData.Execute(json);
             if (validationResult.Valid)
             {
-                validationResult.ValidCardData.VersionAdded = _versionNumberGateway.Get();
-                if (_cardGateway.HasCard( validationResult.ValidCardData.CardID))
+                validationResult.ValidCardData.VersionAdded = _incrementVersionNumber.Execute();
+                
+                if (_cardGateway.HasCard(validationResult.ValidCardData.CardID))
                 {
-                    _cardGateway.UpdateCard( validationResult.ValidCardData);
+                    _cardGateway.UpdateCard(validationResult.ValidCardData);
                 }
                 else
                 {

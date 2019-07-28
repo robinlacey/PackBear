@@ -13,7 +13,7 @@ namespace PackBearTests.UseCase
         [TestCase("Dog")]
         public void ThenCardIDIsPassedToCardGatewayHasCard(string id)
         {
-            CardGatewaySpy spy = new CardGatewaySpy(new CardDummy(),false );
+            CardGatewaySpy spy = new CardGatewaySpy(new CardDummy(), false);
             new RemoveCard(spy, new VersionNumberGatewayDummy()).Execute(id);
             Assert.True(spy.HasCardCalled);
             Assert.True(spy.HasCardID == id);
@@ -21,16 +21,16 @@ namespace PackBearTests.UseCase
 
         public class CardIsInGateway
         {
-            [TestCase(1,"Dog")]
-            [TestCase(12,"Cat")]
-            [TestCase(4,"Cow")]
+            [TestCase(1, "Dog")]
+            [TestCase(12, "Cat")]
+            [TestCase(4, "Cow")]
             public void ThenCardIsFetchedAndVersionRemovedIsUpdated(int version, string cardID)
             {
-                ICard existingCard = new CardStub(cardID,"Title","Description","Image", new ICardOption[0], "Heavy" ); 
-                CardGatewaySpy spy = new CardGatewaySpy(existingCard,true );
+                ICard existingCard = new CardStub(cardID, "Title", "Description", "Image", new ICardOption[0], "Heavy");
+                CardGatewaySpy spy = new CardGatewaySpy(existingCard, true);
                 VersionNumberGatewayStub stub = new VersionNumberGatewayStub(version);
                 new RemoveCard(spy, stub).Execute(cardID);
-                
+
                 Assert.True(spy.GetCardID == cardID);
                 Assert.True(spy.UpdateCardCalled);
                 Assert.True(spy.UpdateCardID == cardID);
@@ -40,12 +40,11 @@ namespace PackBearTests.UseCase
 
         public class CardIsNotInGateway
         {
-         
             [Test]
             public void ThenUpdateIsNotCalled()
             {
-                ICard existingCard = new CardStub("ID","Title","Description","Image", new ICardOption[0], "Heavy" ); 
-                CardGatewaySpy spy = new CardGatewaySpy(existingCard,false );
+                ICard existingCard = new CardStub("ID", "Title", "Description", "Image", new ICardOption[0], "Heavy");
+                CardGatewaySpy spy = new CardGatewaySpy(existingCard, false);
                 new RemoveCard(spy, new VersionNumberGatewayDummy()).Execute("ID");
                 Assert.False(spy.UpdateCardCalled);
             }

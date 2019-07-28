@@ -16,10 +16,13 @@ namespace PackBear.UseCases.IncrementVersionNumber
             _versionNumberGateway = versionNumberGateway;
             _publishMessageAdaptor = publishMessageAdaptor;
         }
-        public void Execute()
+
+        public int Execute()
         {
-            _versionNumberGateway.Set(_versionNumberGateway.Get()+1);
-            _publishMessageAdaptor.Publish(new RequestPackVersionNumberUpdated {PackNumber = _versionNumberGateway.Get()});
+            int newVersion = _versionNumberGateway.Get() + 1;
+            _versionNumberGateway.Set(newVersion);
+            _publishMessageAdaptor.Publish(new RequestPackVersionNumberUpdated {PackNumber = newVersion});
+            return newVersion;
         }
     }
 }

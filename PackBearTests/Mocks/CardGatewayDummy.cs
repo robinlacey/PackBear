@@ -3,7 +3,7 @@ using PackBear.Gateway.Interface;
 
 namespace PackBearTests.Mocks
 {
-    public class CardGatewayDummy:ICardGateway
+    public class CardGatewayDummy : ICardGateway
     {
         public bool HasCard(string cardID)
         {
@@ -14,12 +14,10 @@ namespace PackBearTests.Mocks
 
         public void AddCard(ICard card)
         {
-       
         }
 
         public void UpdateCard(ICard newCardData)
         {
-        
         }
     }
 }

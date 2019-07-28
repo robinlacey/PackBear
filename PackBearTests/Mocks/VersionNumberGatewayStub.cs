@@ -2,7 +2,7 @@ using PackBear.Gateway.Interface;
 
 namespace PackBearTests.Mocks
 {
-    public class VersionNumberGatewayStub:IVersionNumberGateway
+    public class VersionNumberGatewayStub : IVersionNumberGateway
     {
         public int Value { get; }
 
@@ -15,7 +15,6 @@ namespace PackBearTests.Mocks
 
         public void Set(int value)
         {
-           
         }
     }
 }

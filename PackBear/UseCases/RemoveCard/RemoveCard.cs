@@ -4,7 +4,7 @@ using PackBear.UseCases.RemoveCard.Interface;
 
 namespace PackBear.UseCases.RemoveCard
 {
-    public class RemoveCard:IRemoveCard
+    public class RemoveCard : IRemoveCard
     {
         private readonly ICardGateway _cardGateway;
         private readonly IVersionNumberGateway _versionNumberGateway;
@@ -14,9 +14,14 @@ namespace PackBear.UseCases.RemoveCard
             _cardGateway = cardGateway;
             _versionNumberGateway = versionNumberGateway;
         }
+
         public void Execute(string cardID)
         {
-            if (!_cardGateway.HasCard(cardID)) { return; }
+            if (!_cardGateway.HasCard(cardID))
+            {
+                return;
+            }
+
             ICard thisCard = _cardGateway.GetCard(cardID);
             thisCard.VersionRemoved = _versionNumberGateway.Get();
             _cardGateway.UpdateCard(thisCard);

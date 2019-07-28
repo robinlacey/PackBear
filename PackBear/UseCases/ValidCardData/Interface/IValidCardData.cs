@@ -1,6 +1,6 @@
 namespace PackBear.UseCases.IsValidCardData.Interface
 {
-    public interface IIsValidCardData
+    public interface IValidCardData
     {
         IValidationResult Execute(string card);
     }

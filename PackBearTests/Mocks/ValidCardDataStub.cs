@@ -3,17 +3,17 @@ using PackBear.UseCases.IsValidCardData.Interface;
 
 namespace PackBearTests.Mocks
 {
-    public class IsValidCardDataStub:IIsValidCardData
+    public class ValidCardDataStub : IValidCardData
     {
         private readonly ICard _cardData;
         public bool ReturnValue { get; }
 
-        public IsValidCardDataStub(bool returnValue, ICard cardData)
+        public ValidCardDataStub(bool returnValue, ICard cardData)
         {
             _cardData = cardData;
             ReturnValue = returnValue;
         }
 
-        public IValidationResult Execute(string card) => new ValidationResultStub(ReturnValue, "",_cardData);
+        public IValidationResult Execute(string card) => new ValidationResultStub(ReturnValue, "", _cardData);
     }
 }

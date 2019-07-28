@@ -19,7 +19,7 @@ namespace PackBear.Gateway
         {
             throw new System.NotImplementedException();
         }
-        
+
         public void UpdateCard(ICard newCardData)
         {
             throw new System.NotImplementedException();

@@ -54,6 +54,7 @@ namespace PackBear.Player
                         Weights.Add(cardWeight.Key, float.Parse(cardWeight.Value));
                     }
                 }
+
                 if (configurationSection.Key.Trim().ToLower() == "cardoptioncount")
                 {
                     OptionsCount = Int32.Parse(configurationSection.Value);

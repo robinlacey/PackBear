@@ -2,6 +2,6 @@ namespace PackBear.UseCases.IncrementVersionNumber.Interface
 {
     public interface IIncrementVersionNumber
     {
-        void Execute();
+        int Execute();
     }
 }
